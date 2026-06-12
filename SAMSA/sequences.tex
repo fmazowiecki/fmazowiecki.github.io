@@ -1,0 +1,363 @@
+\documentclass[dvipsnames,draft]{beamerikz2}
+% MODES: ready, final, draft, short, brief
+% FONTS: small, basic, large
+% other: plain
+
+% packages --------------------------------------------------------------------
+
+% \usepackage{}
+\usepackage{bbold}
+\usepackage{varwidth}
+\usepackage{mathdots}
+\usepackage{pgfplots}
+\usepackage{svg}
+\usetikzlibrary{arrows,automata}
+\usetikzlibrary{decorations.pathmorphing,shapes}
+% document data ---------------------------------------------------------------
+
+\sBzTitle{Nonlinear extensions of linear recurrence sequences}
+
+\sBzAuthor{Filip Mazowiecki}
+
+% macros ----------------------------------------------------------------------
+
+% \newcommand{\w}{\omega}
+
+% =============================================================================
+
+%eg ie
+\newcommand*{\eg}{e.g.\@\xspace}
+\newcommand*{\ie}{i.e.\@\xspace}
+
+%Automata
+\newcommand{\Aa}{\mathcal{A}}
+\newcommand{\Bb}{\mathcal{B}}
+\newcommand{\Cc}{\mathcal{C}}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\Mm}{\mathcal{M}}
+\newcommand{\Oo}{\mathcal{O}}
+
+%VECTORS
+\newcommand{\uu}{\boldsymbol{u}}
+\newcommand{\vv}{\boldsymbol{v}}
+\newcommand{\aaa}{\boldsymbol{a}}
+\newcommand{\bbb}{\boldsymbol{b}}
+
+%SETS
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Qpos}{\mathbb{Q}_{\ge 0}}
+\newcommand{\bbS}{\mathbb{S}}
+\renewcommand{\S}{\bbS}
+
+%stuff
+\newcommand{\wh}[1]{\widehat{#1}}
+\newcommand{\set}[1]{\{ #1 \}}
+\newcommand{\sem}[1]{\left\llbracket #1 \right\rrbracket}
+\newcommand{\transpose}{\mathsf{T}}
+\newcommand{\td}[1]{\tilde{#1}}
+
+%semirings
+\newcommand{\semiringS}{\S(\oplus,\odot)}
+\newcommand{\semiringQ}{\Q(+,\cdot)}
+\newcommand{\semiringQm}{\Q(\max,\cdot)}
+\newcommand{\semiringZ}{\Z(\min,+)}
+\newcommand{\semiringZR}{\R(\min,+)}
+\newcommand{\semiringN}{\N(\min,+)}
+\newcommand{\zero}{\mathbb{0}}
+\newcommand{\one}{\mathbb{1}}
+
+\newcommand{\poly}{\operatorname{poly}}
+
+%fill
+\newcommand{\background}[2]{
+\dBzH[0.5]
+\path[fill=#1,rounded corners=3pt] (-10,\bzH) rectangle (10,\bzH-#2);
+\iBzH[0.5]
+}
+
+\begin{document}
+
+\begin{bzPlainFrame}%[show]
+\bzOn{
+	\iBzH[2.5]
+	\bzCenter[bzEB, scale=1.4]{Nonlinear extensions of}
+	\iBzH[0.6]
+	\bzCenter[bzEB, scale=1.4]{linear recurrence sequences}
+
+	\iBzH[2.2]
+	\bzCenter{Filip Mazowiecki}
+	\iBzH[0.4]
+	\bzCenter[scale=0.7]{\sc Uniwersytet Warszawski}
+
+	\iBzH[1.8]
+	\bzCenter{SAMSA 2026}
+
+}
+\end{bzPlainFrame}
+
+%LRS
+\begin{bzFrame}%[show]
+\bzOn{
+	\bzCenter[bzEB]{Linear recurrence sequences (LRS)}
+\bzText{$a : \N \to \Q$}
+	\iBzH[0.5]
+	\bzText{For example {\textcolor{bzRed}{$a_n = n^2$}}}
+
+	\iBzH[2]
+	
+    \bzCenter[align=left]{$\textcolor{bzRed}{a_0} = 0$,\quad $\textcolor{bzRed}{a_{n+1}} = \textcolor{bzRed}{a_n} + 2\textcolor{bzBlue}{b_n} + \textcolor{bzGreen}{c_n}$ \\
+    $\textcolor{bzBlue}{b_0} = 0$,\quad $\textcolor{bzBlue}{b_{n+1}} = \textcolor{bzBlue}{b_n} + \textcolor{bzGreen}{c_n}$ \\
+    $\textcolor{bzGreen}{c_0} = 1$,\quad $\textcolor{bzGreen}{c_{n+1}} = \textcolor{bzGreen}{c_n}$}
+}
+
+\iBzH[2]
+
+\bzOn{
+\bzCenter{$\textcolor{bzRed}{a_n} =
+\begin{pmatrix}
+0 & 0 &1
+\end{pmatrix}
+\begin{pmatrix}
+1 & 0 & 0\\
+2 & 1 & 0\\
+1 & 1 & 1
+\end{pmatrix}^n
+\begin{pmatrix}
+1\\
+0\\
+0
+\end{pmatrix}
+$}
+
+\iBzH
+
+\bzText{In general $u_n = I^{\transpose}M^nF$}
+}
+
+\iBzH[1]
+
+\bzOn{
+
+    \bzText{Can be also defined by  {\textcolor{bzRed}{$a_{n+3} = 3a_{n+2} - 3a_{n+1} + a_n$}}}
+    \bzText{In general $u_{n+k} = \sum_{i=0}^{k-1} \alpha_i u_{n+i}$}
+}
+\end{bzFrame}
+
+%LRS PROPERTIES
+\begin{bzFrame}
+\bzOn{
+\bzCenter[bzEB]{Many nice properties of LRS}
+
+\iBzH[1]
+
+\bzItem{Unique, computable minimal degree}
+\bzText[bzRed]{($d = 3$ for $a_n = n^2$)}
+}
+
+\iBzH[1]
+
+\bzOn{
+\bzItem{Closure properties, given LRS $a_n$, $b_n$:}
+\bzText[bzRed]{$c_n = a_n + b_n$, \quad $c_n = a_n \cdot b_n$, \quad $c_n = a_n * b_n = \sum_{i<n}a_i \cdot b_{n-i-1}$}
+}
+
+\iBzH[1]
+
+\bzOn{
+\bzItem{Closed form}
+\bzText[bzRed]{$a_n = \sum_i p_i(n) \cdot \lambda_i^n$}
+\bzText{(for $n$ big enough)}
+}
+
+\iBzH[1]
+
+\bzOn{
+\bzText{e.g. $F_n = \frac{1}{\sqrt{5}}\varphi^n + \frac{1}{\sqrt{5}} \psi^n$}
+}
+\end{bzFrame}
+
+%WEIGHTED
+\begin{bzFrame}
+\bzOn{
+\bzCenter[bzEB]{Weighted automata over the rational field}
+
+\iBzH[1]
+
+\bzItem{$\Aa$ is defined by $\Sigma = \set{a,b,c}$, \quad $M_a,M_b,M_c \in \Q^{d \times d}, \quad I,F \in \Q^d$}
+}
+
+\iBzH[1]
+
+\bzOn{
+\bzText[bzRed]{$\Aa : \Sigma^* \to \Q$}
+\bzText[bzRed]{$\Aa(w) = I^{\transpose} M_w F$, where $M_w = M_{w_1}\ldots M_{w_n}$ for $w = w_1\ldots w_n$.}
+}
+
+\iBzH[1]
+
+\bzOn{
+\bzItem{LRS are weighted automata for $|\Sigma| = 1$.}
+}
+
+\iBzH[1]
+
+\bzOn{
+\bzItem{We consider extensions of LRS from this point of view.}
+}
+
+\bzOn{
+\bzText{We work over $\Q$}
+}
+\end{bzFrame}
+
+%Polynomial
+\begin{bzFrame}
+\bzOn{
+\bzCenter[bzEB]{Polynomial sequences (polyrec)}
+
+\iBzH[1]
+
+\bzText{Change matrices $M_a$ to polynomial maps}
+}
+
+\bzOn{
+\bzText{Polynomial automata, cost-register automata, polynomial recurrent relations}
+\bzText{\textcolor{bzGray}{[Benedikt et al., 2017], [Alur et al., 2013], [S\'{e}nizergues, 2007]}}
+}
+
+
+\iBzH[1]
+
+\bzOn{
+\bzText{Example $a_n = 2^{2^n}$}
+\bzText[bzRed]{$a_0 = 2$, \quad $a_{n+1} = a_n^2$, \quad $f_1(x) =  x^2$}
+}
+
+\iBzH[1]
+
+\bzOn{
+\bzText{Example $a_n = n!$}
+\bzText[bzRed]{$a_0 = 1$, \quad $a_{n+1} = a_n \cdot b_n$, \quad $f_1(x,y) = xy$}
+\bzText[bzRed]{$b_0 = 1$, \quad $b_{n+1} = b_n + 1$, \quad $f_2(x,y) = y+1$}
+}
+
+\iBzH[1]
+
+\bzOn{
+\bzText{Example $a_n = 2^{2^n} + n!$, \quad or $a_n = 2^{2^n} \cdot n!$}
+}
+\end{bzFrame}
+
+%holonomic
+\begin{bzFrame}
+\bzOn{
+\bzCenter[bzEB]{Holonomic/P-recursive sequences}
+
+\iBzH[1]
+
+\bzText{In the automata definition generalise to context-free grammars (CFGs)}
+\bzText{Weighted/probabilistic CFGs \textcolor{bzGray}{[Chomsky and Sch\"{u}tzenberger, 1959]}}
+}
+
+\iBzH[1]
+
+\bzOn{
+\bzText{Equivalently: allow polynomials (in $n$) in the recursion}
+}
+
+\iBzH[1]
+
+\bzOn{
+\bzText{Example $a_n = n!$}
+\bzText[bzRed]{$a_0 = 1$, \quad $a_{n+1} = a_n \cdot n$}
+}
+
+\iBzH[1]
+
+\bzOn{
+\bzText{Example $C_n$ Catalan numbers}
+\bzText[bzRed]{$C_0 = 1$, \quad $(n+2)C_{n+1} = (4n+2)C_n$}
+}
+
+\iBzH[1]
+
+\bzOn{
+\bzText{Example $a_n = C_n + n!$, \quad $a_n = C_n \cdot n!$, \quad $a_n = C_n * n!$}
+}
+\end{bzFrame}
+
+%wmso
+\begin{bzFrame}
+\bzOn{
+\bzCenter[bzEB]{MSO sequences}
+
+\iBzH[1]
+
+\bzText{Present in the logic framework, replace quantifiers with aggregators}
+\bzText{Weighted MSO \textcolor{bzGray}{[Droste and Gastin, 2005]}}
+}
+
+\iBzH[1]
+
+\bzOn{
+\bzText{MSO formula evaluate to $0$ or $1$, \quad constants evaluate to themselves,}
+\bzText{$\wedge$, $\vee$ become $\cdot$ and $+$, \quad $\exists$,  $\forall$ become $\sum$ and $\prod$}
+}
+
+\iBzH[1]
+
+\bzOn{
+\bzText{Example $a_n = n^n$ and $b_n = n!$}
+\bzText[bzRed]{$a_n = \prod_{x} \sum_y 1$, \quad $b_n = \prod_x \sum_y [x \le y]$}
+}
+
+\iBzH[1]
+
+\bzOn{
+\bzText{Example $a_n = 2^n$ and $b_n = 2^{2^n}$}
+\bzText[bzRed]{$a_n = \sum_X 1$, \quad $b_n = \prod_X 1$}
+}
+\end{bzFrame}
+
+%expressivness 
+\begin{bzFrame}
+\bzOn{
+\bzCenter[bzEB]{Three nonlinear extensions}
+
+
+}
+\end{bzFrame}
+
+
+%asymptotics
+\begin{bzFrame}
+\bzOn{
+\bzCenter[bzEB]{Asymptotics of sequences}
+
+\iBzH[1]
+
+\bzText{Bound on $|a_n| \le f(n)$?}
+}
+\end{bzFrame}
+
+
+%CONCLUSIONS
+\begin{bzFrame}%[show]
+\bzOn{
+\bzCenter[bzEB]{Conclusion}
+
+	\iBzH[1]
+
+\bzItem{Boundedness proof is inspired by {\color{gray}[Simon 1994]}}
+	\iBzH[1]
+\bzText{we believe it should work in more dimensions}
+}
+
+\end{bzFrame}
+
+% =============================================================================
+
+\end{document}
